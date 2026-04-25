@@ -63,6 +63,5 @@
                 - url: "http://10.10.20.10:8081"
 
 - name: Start Traefik stack
-  command: docker compose up -d
-  args:
-    chdir: /opt/traefik
+  community.docker.docker_compose:
+    project_src: /opt/traefik
