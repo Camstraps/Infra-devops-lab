@@ -1,0 +1,21 @@
+#cloud-config
+
+hostname: adm-ansible-01
+
+users:
+  - name: ansible
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIIYgy9aBQZZSX+W1v8Y9CDLul5T8d40OFBN19JmjFM1C camstraps@infra-devops-lab
+
+package_update: true
+packages:
+  - qemu-guest-agent
+  - curl
+  - sudo
+
+runcmd:
+  - systemctl enable qemu-guest-agent
+  - systemctl start qemu-guest-agent
