@@ -4,6 +4,7 @@
 
   roles:
     - docker
+    - demo_app
 
 - name: Configure reverse proxy
   hosts: dmz

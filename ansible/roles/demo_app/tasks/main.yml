@@ -1,0 +1,27 @@
+- name: Create demo app directory
+  file:
+    path: /opt/demo-app
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Create demo app docker-compose file
+  copy:
+    dest: /opt/demo-app/docker-compose.yml
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      services:
+        whoami:
+          image: traefik/whoami
+          container_name: demo-whoami
+          restart: unless-stopped
+          ports:
+            - "8081:80"
+
+- name: Start demo app
+  command: docker compose up -d
+  args:
+    chdir: /opt/demo-app
