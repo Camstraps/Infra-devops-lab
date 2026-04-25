@@ -63,5 +63,6 @@
                 - url: "http://10.10.20.10:8081"
 
 - name: Start Traefik stack
-  community.docker.docker_compose:
+  community.docker.docker_compose_v2:
     project_src: /opt/traefik
+    state: present
