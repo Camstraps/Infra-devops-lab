@@ -22,6 +22,6 @@
             - "8081:80"
 
 - name: Start demo app
-  command: docker compose up -d
-  args:
-    chdir: /opt/demo-app
+  community.docker.docker_compose_v2:
+    project_src: /opt/demo-app
+    state: present
