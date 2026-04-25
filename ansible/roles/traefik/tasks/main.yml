@@ -33,11 +33,34 @@
             - "--providers.docker=true"
             - "--providers.docker.exposedbydefault=false"
             - "--entrypoints.web.address=:80"
+            - "--providers.file.filename=/etc/traefik/dynamic.yml"
           ports:
             - "80:80"
             - "8080:8080"
           volumes:
             - /var/run/docker.sock:/var/run/docker.sock:ro
+            - /opt/traefik/config/dynamic.yml:/etc/traefik/dynamic.yml:ro
+
+- name: Create Traefik dynamic config
+  copy:
+    dest: /opt/traefik/config/dynamic.yml
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      http:
+        routers:
+          demo-app:
+            rule: "Host(`demo.lab.local`)"
+            entryPoints:
+              - web
+            service: demo-app
+
+        services:
+          demo-app:
+            loadBalancer:
+              servers:
+                - url: "http://10.10.20.10:8081"
 
 - name: Start Traefik stack
   command: docker compose up -d
