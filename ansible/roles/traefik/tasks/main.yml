@@ -1,3 +1,9 @@
+- name: Ensure hostname is resolvable locally
+  lineinfile:
+    path: /etc/hosts
+    line: "127.0.1.1 {{ inventory_hostname }}"
+    state: present
+
 - name: Create Traefik directories
   file:
     path: "{{ item }}"
