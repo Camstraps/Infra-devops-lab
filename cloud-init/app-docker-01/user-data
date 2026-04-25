@@ -1,0 +1,21 @@
+#cloud-config
+
+hostname: app-docker-01
+
+users:
+  - name: ansible
+    sudo: ALL=(ALL) NOPASSWD:ALL
+    groups: users, admin
+    shell: /bin/bash
+    ssh_authorized_keys:
+      - ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIKJEGuRejBZpRfF1ZqS8CIClNGgl1Wezq5X7UFM8YjyK ansible@adm-ansible-01
+
+package_update: true
+packages:
+  - qemu-guest-agent
+  - curl
+  - sudo
+
+runcmd:
+  - systemctl enable qemu-guest-agent
+  - systemctl start qemu-guest-agent

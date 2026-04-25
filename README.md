@@ -1,6 +1,6 @@
 # Infra DevOps Lab
 
-Projet personnel réalisé dans le cadre de ma montée en compétences vers un rôle d’Ingénieur Systèmes / DevOps (RNCP39582).
+Projet personnel réalisé dans le cadre de ma montée en compétences vers un rôle d’Ingénieur Systèmes / DevOps.
 
 L’objectif est de concevoir et déployer une infrastructure complète, virtualisée localement, en reproduisant les bonnes pratiques d’un environnement d’entreprise : segmentation réseau, sécurité, automatisation et observabilité.
 
