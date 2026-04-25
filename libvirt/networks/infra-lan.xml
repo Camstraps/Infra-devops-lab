@@ -1,0 +1,5 @@
+<network>
+  <name>infra-lan</name>
+  <bridge name="virbr-lan"/>
+  <forward mode="none"/>
+</network>

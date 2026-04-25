@@ -1,0 +1,5 @@
+<network>
+  <name>infra-dmz</name>
+  <bridge name="virbr-dmz"/>
+  <forward mode="none"/>
+</network>

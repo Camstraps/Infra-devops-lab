@@ -1,0 +1,5 @@
+<network>
+  <name>infra-admin</name>
+  <bridge name="virbr-admin"/>
+  <forward mode="none"/>
+</network>
