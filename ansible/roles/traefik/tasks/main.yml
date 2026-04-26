@@ -97,9 +97,9 @@
       tls:
         certificates:
           - certFile: "/certs/demo.lab.local.crt"
-            keyFile: "/certs/demo.lab.local.key"- name: Start Traefik stack
+            keyFile: "/certs/demo.lab.local.key"
 
-
+- name: Start Traefik stack
   community.docker.docker_compose_v2:
     project_src: /opt/traefik
     state: present
