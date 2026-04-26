@@ -99,6 +99,15 @@
           - certFile: "/certs/demo.lab.local.crt"
             keyFile: "/certs/demo.lab.local.key"
 
+
+
+- name: Create Traefik dynamic config
+  copy:
+    dest: /opt/traefik/config/dynamic.yml
+    ...
+  notify: Restart Traefik
+
+
 - name: Start Traefik stack
   community.docker.docker_compose_v2:
     project_src: /opt/traefik
