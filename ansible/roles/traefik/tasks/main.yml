@@ -16,21 +16,18 @@
     - /opt/traefik/config
     - /opt/traefik/certs
 
-- name: Copy TLS certificate
+- name: Deploy TLS certificate
   copy:
-    src: certs/demo.lab.local.crt
     dest: /opt/traefik/certs/demo.lab.local.crt
-    owner: root
-    group: root
-    mode: "0644"
+    content: "{{ traefik_tls_cert }}"
+    mode: '0644'
 
-- name: Copy TLS key
+- name: Deploy TLS key
   copy:
-    src: certs/demo.lab.local.key
     dest: /opt/traefik/certs/demo.lab.local.key
-    owner: root
-    group: root
-    mode: "0600"
+    content: "{{ traefik_tls_key }}"
+    mode: '0600'
+
 
 - name: Create Traefik docker-compose file
   copy:
