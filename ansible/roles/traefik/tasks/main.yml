@@ -67,12 +67,26 @@
     content: |
       http:
         routers:
+          demo-app-http:
+            rule: "Host(`demo.lab.local`)"
+            entryPoints:
+              - web
+            middlewares:
+              - redirect-to-https
+            service: noop@internal
+
           demo-app:
             rule: "Host(`demo.lab.local`)"
             entryPoints:
               - websecure
             service: demo-app
             tls: {}
+
+        middlewares:
+          redirect-to-https:
+            redirectScheme:
+              scheme: https
+              permanent: true
 
         services:
           demo-app:
@@ -83,9 +97,9 @@
       tls:
         certificates:
           - certFile: "/certs/demo.lab.local.crt"
-            keyFile: "/certs/demo.lab.local.key"
+            keyFile: "/certs/demo.lab.local.key"- name: Start Traefik stack
 
-- name: Start Traefik stack
+
   community.docker.docker_compose_v2:
     project_src: /opt/traefik
     state: present
