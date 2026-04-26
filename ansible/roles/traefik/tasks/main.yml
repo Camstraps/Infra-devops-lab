@@ -57,6 +57,8 @@
             - /var/run/docker.sock:/var/run/docker.sock:ro
             - /opt/traefik/config/dynamic.yml:/etc/traefik/dynamic.yml:ro
             - /opt/traefik/certs:/certs:ro
+    notify: Restart Traefik
+
 
 - name: Create Traefik dynamic config
   copy:
@@ -98,14 +100,8 @@
         certificates:
           - certFile: "/certs/demo.lab.local.crt"
             keyFile: "/certs/demo.lab.local.key"
+    notify: Restart Traefik
 
-
-
-- name: Create Traefik dynamic config
-  copy:
-    dest: /opt/traefik/config/dynamic.yml
-    ...
-  notify: Restart Traefik
 
 
 - name: Start Traefik stack
