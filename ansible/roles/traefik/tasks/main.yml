@@ -14,6 +14,23 @@
   loop:
     - /opt/traefik
     - /opt/traefik/config
+    - /opt/traefik/certs
+
+- name: Copy TLS certificate
+  copy:
+    src: certs/demo.lab.local.crt
+    dest: /opt/traefik/certs/demo.lab.local.crt
+    owner: root
+    group: root
+    mode: "0644"
+
+- name: Copy TLS key
+  copy:
+    src: certs/demo.lab.local.key
+    dest: /opt/traefik/certs/demo.lab.local.key
+    owner: root
+    group: root
+    mode: "0600"
 
 - name: Create Traefik docker-compose file
   copy:
@@ -32,14 +49,17 @@
             - "--api.insecure=true"
             - "--providers.docker=true"
             - "--providers.docker.exposedbydefault=false"
-            - "--entrypoints.web.address=:80"
             - "--providers.file.filename=/etc/traefik/dynamic.yml"
+            - "--entrypoints.web.address=:80"
+            - "--entrypoints.websecure.address=:443"
           ports:
             - "80:80"
+            - "443:443"
             - "8080:8080"
           volumes:
             - /var/run/docker.sock:/var/run/docker.sock:ro
             - /opt/traefik/config/dynamic.yml:/etc/traefik/dynamic.yml:ro
+            - /opt/traefik/certs:/certs:ro
 
 - name: Create Traefik dynamic config
   copy:
@@ -53,14 +73,20 @@
           demo-app:
             rule: "Host(`demo.lab.local`)"
             entryPoints:
-              - web
+              - websecure
             service: demo-app
+            tls: {}
 
         services:
           demo-app:
             loadBalancer:
               servers:
                 - url: "http://10.10.20.10:8081"
+
+      tls:
+        certificates:
+          - certFile: "/certs/demo.lab.local.crt"
+            keyFile: "/certs/demo.lab.local.key"
 
 - name: Start Traefik stack
   community.docker.docker_compose_v2:
