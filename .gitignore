@@ -3,6 +3,7 @@
 
 # Private keys / secrets
 *.key
+ansible/secrets/
 
 # Local Ansible files
 *.retry
