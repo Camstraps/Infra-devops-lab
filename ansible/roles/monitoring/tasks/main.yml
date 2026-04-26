@@ -1,0 +1,33 @@
+---
+- name: Create monitoring directory
+  file:
+    path: /opt/monitoring
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+
+- name: Create monitoring docker-compose file
+  copy:
+    dest: /opt/monitoring/docker-compose.yml
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      services:
+        grafana:
+          image: grafana/grafana:latest
+          container_name: grafana
+          restart: unless-stopped
+          ports:
+            - "3000:3000"
+          volumes:
+            - grafana-data:/var/lib/grafana
+
+      volumes:
+        grafana-data:
+
+- name: Start monitoring stack
+  community.docker.docker_compose_v2:
+    project_src: /opt/monitoring
+    state: present
