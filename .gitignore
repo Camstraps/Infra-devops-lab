@@ -1,3 +1,9 @@
+# Cloud-init / ISO seeds
 *.iso
-*.iso
+
+# Private keys / secrets
 *.key
+
+# Local Ansible files
+*.retry
+.vault_pass
