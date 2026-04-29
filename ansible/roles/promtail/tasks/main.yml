@@ -1,0 +1,57 @@
+---
+- name: Create Promtail directories
+  file:
+    path: "{{ item }}"
+    state: directory
+    owner: root
+    group: root
+    mode: "0755"
+  loop:
+    - /opt/promtail
+    - /opt/promtail/config
+    - /opt/promtail/data
+
+- name: Create Promtail config
+  copy:
+    dest: /opt/promtail/config/promtail.yml
+    mode: "0644"
+    content: |
+      server:
+        http_listen_port: 9080
+
+      positions:
+        filename: /tmp/positions.yaml
+
+      clients:
+        - url: http://10.10.20.30:3100/loki/api/v1/push
+
+      scrape_configs:
+        - job_name: system
+          static_configs:
+            - targets:
+                - localhost
+              labels:
+                job: varlogs
+                host: {{ inventory_hostname }}
+                __path__: /var/log/*.log
+
+- name: Create Promtail docker-compose file
+  copy:
+    dest: /opt/promtail/docker-compose.yml
+    mode: "0644"
+    content: |
+      services:
+        promtail:
+          image: grafana/promtail:latest
+          container_name: promtail
+          restart: unless-stopped
+          command: -config.file=/etc/promtail/promtail.yml
+          volumes:
+            - /opt/promtail/config/promtail.yml:/etc/promtail/promtail.yml:ro
+            - /var/log:/var/log:ro
+            - /opt/promtail/data:/tmp
+
+- name: Start Promtail
+  community.docker.docker_compose_v2:
+    project_src: /opt/promtail
+    state: present
