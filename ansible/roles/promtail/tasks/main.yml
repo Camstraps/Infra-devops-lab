@@ -34,7 +34,7 @@
                 job: system
                 host: {{ inventory_hostname }}
                 role: {{ node_role | default("unknown") }}
-                __path__: /var/log/{syslog,auth.log}
+                __path__: /var/log/{cloud-init.log,cloud-init-output.log,dpkg.log}
 
         - job_name: docker
           static_configs:
