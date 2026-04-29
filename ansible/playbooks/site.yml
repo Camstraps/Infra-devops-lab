@@ -33,3 +33,11 @@
   roles:
     - docker
     - node_exporter
+
+
+- name: Configure logs stack
+  hosts: logs
+  become: true
+  roles:
+    - docker
+    - loki
