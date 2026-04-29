@@ -1,4 +1,4 @@
-# 🧪 Infra DevOps Lab
+# Infra DevOps Lab
 
 Ce projet est un lab personnel réalisé dans une démarche de montée en compétences autour des pratiques DevOps, de l’observabilité et de l’automatisation d’infrastructure.
 
@@ -6,7 +6,7 @@ Issu d’un parcours en administration systèmes et réseaux, l’objectif est i
 
 ---
 
-## 🎯 Objectifs
+## Objectifs
 
 - Automatiser le déploiement d’une infrastructure avec Ansible
 - Mettre en place une architecture réseau segmentée (DMZ / LAN / ADMIN)
@@ -17,7 +17,7 @@ Issu d’un parcours en administration systèmes et réseaux, l’objectif est i
 
 ---
 
-## 🏗️ Architecture
+## Architecture
 
 ### Réseau
 
@@ -41,17 +41,13 @@ Issu d’un parcours en administration systèmes et réseaux, l’objectif est i
 
 ### Flux
 
-#### 🌐 Trafic web
+#### Trafic web
 
 User → Traefik → Application Docker
-
-
-#### 📊 Metrics
+#### Metrics
 
 Node Exporter → Prometheus → Grafana
-
-
-#### 📄 Logs
+#### Logs
 
 VMs → Promtail → Loki → Grafana
 
@@ -59,7 +55,7 @@ VMs → Promtail → Loki → Grafana
 
 ---
 
-## 🛠️ Stack technique
+## Stack technique
 
 ### Infrastructure
 - KVM / libvirt
@@ -84,7 +80,7 @@ VMs → Promtail → Loki → Grafana
 
 ---
 
-## 🚀 Déploiement
+##  Déploiement
 
 Le déploiement est entièrement automatisé avec Ansible.
 
@@ -92,12 +88,11 @@ Le déploiement est entièrement automatisé avec Ansible.
 ansible-playbook -i inventory/hosts.ini playbooks/site.yml --ask-vault-pass
 ```
 
-## 🔍 Observabilité
+##  Observabilité
 ### Logs (Loki)
 
 Exemples de requêtes :
 
-```
 ```bash
 {job="docker"}
 ```
@@ -105,18 +100,14 @@ Exemples de requêtes :
 ```bash
 {job="system"}
 ```
-```
 
 ```bash
 {job="docker"} |= "error"
 ```
-```
-```
-```
 
 ### Metrics (Prometheus)
 
- - CPU / RAM / Disk via Node Exporter
+- CPU / RAM / Disk via Node Exporter
 - Visualisation via Grafana
 
 ### Exemples
@@ -124,21 +115,20 @@ Exemples de requêtes :
 ---
 
 # Ce que j’ai travaillé dans ce projet
-
-Mise en place d’une architecture segmentée
-Automatisation complète avec Ansible
-Déploiement de services conteneurisés
-Centralisation et exploitation des logs
-Mise en place d’une stack de monitoring
-Compréhension des flux (réseau, logs, metrics)
+- Mise en place d’une architecture segmentée
+- Automatisation complète avec Ansible
+- Déploiement de services conteneurisés
+- Centralisation et exploitation des logs
+- Mise en place d’une stack de monitoring
+- Compréhension des flux (réseau, logs, metrics)
 
 # Améliorations possibles
 
-Ajout d’alerting (Grafana / Prometheus / Loki)
-Activation et analyse des logs Traefik (HTTP access logs)
-Mise en place de TLS avec certificats valides (Let's Encrypt)
-Déploiement sur un environnement cloud (AWS / Azure)
-Ajout d’un pipeline CI/CD
+- Ajout d’alerting (Grafana / Prometheus / Loki)
+- Activation et analyse des logs Traefik (HTTP access logs)
+- Mise en place de TLS avec certificats valides (Let's Encrypt)
+- Déploiement sur un environnement cloud (AWS / Azure)
+- Ajout d’un pipeline CI/CD
 
 # Remarques
 
