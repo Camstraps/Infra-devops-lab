@@ -10,6 +10,8 @@
     - /opt/monitoring
     - /opt/monitoring/prometheus
     - /opt/monitoring/grafana/provisioning/datasources
+    - /opt/monitoring/grafana/provisioning/dashboards
+    - /opt/monitoring/grafana/dashboards
 
 - name: Create Prometheus config
   copy:
@@ -55,6 +57,25 @@
   notify: Restart Grafana
 
 
+- name: Deploy Grafana dashboard provider
+  copy:
+    src: grafana/provisioning/dashboards/default.yml
+    dest: /opt/monitoring/grafana/provisioning/dashboards/default.yml
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart Grafana
+
+- name: Deploy Grafana Node Exporter dashboard
+  copy:
+    src: grafana/dashboards/node-exporter.json
+    dest: /opt/monitoring/grafana/dashboards/node-exporter.json
+    owner: root
+    group: root
+    mode: "0644"
+  notify: Restart Grafana
+
+
 - name: Create monitoring docker-compose file
   copy:
     dest: /opt/monitoring/docker-compose.yml
@@ -72,6 +93,7 @@
           volumes:
             - grafana-data:/var/lib/grafana
             - /opt/monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
+            - /opt/monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
 
         prometheus:
           image: prom/prometheus:latest
