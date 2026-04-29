@@ -43,7 +43,7 @@
     - loki
 
 - name: Deploy promtail
-  hosts: all
+  hosts: docker_hosts:monitoring:logs:dmz
   become: true
   roles:
     - promtail
