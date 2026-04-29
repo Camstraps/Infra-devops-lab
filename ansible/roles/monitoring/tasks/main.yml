@@ -9,6 +9,7 @@
   loop:
     - /opt/monitoring
     - /opt/monitoring/prometheus
+    - /opt/monitoring/grafana/provisioning/datasources
 
 - name: Create Prometheus config
   copy:
@@ -35,6 +36,25 @@
   notify: Restart Prometheus
 
 
+- name: Create Grafana datasource provisioning config
+  copy:
+    dest: /opt/monitoring/grafana/provisioning/datasources/prometheus.yml
+    owner: root
+    group: root
+    mode: "0644"
+    content: |
+      apiVersion: 1
+
+      datasources:
+        - name: Prometheus
+          type: prometheus
+          access: proxy
+          url: http://prometheus:9090
+          isDefault: true
+          editable: true
+  notify: Restart Grafana
+
+
 - name: Create monitoring docker-compose file
   copy:
     dest: /opt/monitoring/docker-compose.yml
@@ -51,6 +71,7 @@
             - "3000:3000"
           volumes:
             - grafana-data:/var/lib/grafana
+            - /opt/monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
 
         prometheus:
           image: prom/prometheus:latest
