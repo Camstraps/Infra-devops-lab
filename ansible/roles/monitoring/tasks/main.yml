@@ -54,6 +54,12 @@
           url: http://prometheus:9090
           isDefault: true
           editable: true
+
+        - name: Loki
+          type: loki
+          access: proxy
+          url: http://10.10.20.30:3100
+          editable: true
   notify: Restart Grafana
 
 
