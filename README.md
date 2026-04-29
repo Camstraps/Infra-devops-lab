@@ -5,7 +5,14 @@ Ce projet est un lab personnel réalisé dans une démarche de montée en compé
 Issu d’un parcours en administration systèmes et réseaux, l’objectif est ici de construire une infrastructure cohérente et proche de la réalité, tout en intégrant des outils et méthodes modernes (Docker, Ansible, monitoring, centralisation des logs).
 
 ---
+## Aperçu
 
+Ce lab reproduit une infrastructure segmentée avec :
+
+- un reverse proxy en DMZ (Traefik)
+- une application conteneurisée
+- une stack de monitoring (Prometheus / Grafana)
+- une centralisation des logs multi-machines (Loki / Promtail)
 ## Objectifs
 
 - Automatiser le déploiement d’une infrastructure avec Ansible
@@ -43,13 +50,28 @@ Issu d’un parcours en administration systèmes et réseaux, l’objectif est i
 
 #### Trafic web
 
-User → Traefik → Application Docker
+[User]  
+↓  
+[Traefik - Reverse Proxy]  
+↓  
+[Application Docker]
+
 #### Metrics
 
-Node Exporter → Prometheus → Grafana
+[Node Exporter]
+   ↓
+[Prometheus]
+   ↓
+[Grafana]
 #### Logs
 
-VMs → Promtail → Loki → Grafana
+[VMs]
+   ↓
+[Promtail]
+   ↓
+[Loki]
+   ↓
+[Grafana]
 
 
 
@@ -91,26 +113,35 @@ ansible-playbook -i inventory/hosts.ini playbooks/site.yml --ask-vault-pass
 ##  Observabilité
 ### Logs (Loki)
 
+Centralisation des logs système et Docker depuis plusieurs machines, avec enrichissement via labels (`job`, `host`, `role`).
+
 Exemples de requêtes :
 
-```bash
+```logql
 {job="docker"}
 ```
 
-```bash
+```
 {job="system"}
 ```
 
-```bash
+```
 {job="docker"} |= "error"
 ```
 
+```
+{role="application"}
+```
 ### Metrics (Prometheus)
 
 - CPU / RAM / Disk via Node Exporter
 - Visualisation via Grafana
 
-### Exemples
+## Exemples
+### Logs centralisés avec Loki
+
+![Logs Grafana](docs/screenshot/query_loki_result.png)
+
 
 ---
 
@@ -121,6 +152,14 @@ Exemples de requêtes :
 - Centralisation et exploitation des logs
 - Mise en place d’une stack de monitoring
 - Compréhension des flux (réseau, logs, metrics)
+
+## Ce que ce projet démontre  
+  
+- Capacité à concevoir une architecture réseau segmentée  
+- Automatisation complète d’une infrastructure avec Ansible  
+- Déploiement et gestion de services conteneurisés  
+- Mise en place d’une stack d’observabilité (metrics + logs)  
+- Centralisation et exploitation des logs multi-machines
 
 # Améliorations possibles
 
