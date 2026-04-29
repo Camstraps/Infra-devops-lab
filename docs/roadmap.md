@@ -90,8 +90,8 @@ Construire une infrastructure complète, automatisée et sécurisée, proche d�
 
 ### 📊 Observabilité
 
-- [ ] Déploiement Prometheus
-- [ ] Déploiement Grafana
+- [X] Déploiement Prometheus
+- [X] Déploiement Grafana
 - [ ] Déploiement Loki (logs)
 - [ ] Centralisation logs applicatifs
 

@@ -24,3 +24,12 @@
   roles:
     - docker
     - monitoring
+
+
+- name: Deploy node exporter
+  hosts: node_exporters
+  become: true
+
+  roles:
+    - docker
+    - node_exporter
