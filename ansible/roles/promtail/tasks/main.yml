@@ -31,9 +31,20 @@
             - targets:
                 - localhost
               labels:
-                job: varlogs
+                job: system
                 host: {{ inventory_hostname }}
+                role: {{ node_role | default("unknown") }}
                 __path__: /var/log/*.log
+
+        - job_name: docker
+          static_configs:
+            - targets:
+                - localhost
+              labels:
+                job: docker
+                host: {{ inventory_hostname }}
+                role: {{ node_role | default("unknown") }}
+                __path__: /var/lib/docker/containers/*/*.log
 
 - name: Create Promtail docker-compose file
   copy:
@@ -50,6 +61,7 @@
             - /opt/promtail/config/promtail.yml:/etc/promtail/promtail.yml:ro
             - /var/log:/var/log:ro
             - /opt/promtail/data:/tmp
+            - /var/lib/docker/containers:/var/lib/docker/containers:ro
 
 - name: Start Promtail
   community.docker.docker_compose_v2:
