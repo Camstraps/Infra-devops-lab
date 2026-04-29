@@ -1,85 +1,145 @@
-# Infra DevOps Lab
+# 🧪 Infra DevOps Lab
 
-Projet personnel réalisé dans le cadre de ma montée en compétences vers un rôle d’Ingénieur Systèmes / DevOps.
+Ce projet est un lab personnel réalisé dans une démarche de montée en compétences autour des pratiques DevOps, de l’observabilité et de l’automatisation d’infrastructure.
 
-L’objectif est de concevoir et déployer une infrastructure complète, virtualisée localement, en reproduisant les bonnes pratiques d’un environnement d’entreprise : segmentation réseau, sécurité, automatisation et observabilité.
-
----
-
-## Contexte technique
-
-- Host : Arch Linux
-- Virtualisation : KVM / libvirt (virt-manager)
-- OS invités : Debian 12
-- Approche : infrastructure reproductible + automatisation progressive
+Issu d’un parcours en administration systèmes et réseaux, l’objectif est ici de construire une infrastructure cohérente et proche de la réalité, tout en intégrant des outils et méthodes modernes (Docker, Ansible, monitoring, centralisation des logs).
 
 ---
 
-## Objectifs du projet
+## 🎯 Objectifs
 
-Ce projet me permet de travailler concrètement sur :
-
-- la conception d’une architecture réseau segmentée (DMZ / LAN / ADMIN)
-- le déploiement d’un firewall (OPNsense)
-- l’exposition sécurisée de services via un reverse proxy (Traefik)
-- la conteneurisation d’applications avec Docker
-- la mise en place de supervision (Prometheus / Grafana)
-- la centralisation des logs (Loki)
-- l’automatisation avec Ansible
-- une première approche CI/CD avec GitHub Actions
+- Automatiser le déploiement d’une infrastructure avec Ansible
+- Mettre en place une architecture réseau segmentée (DMZ / LAN / ADMIN)
+- Déployer des services conteneurisés (Docker)
+- Implémenter une stack d’observabilité complète (metrics + logs)
+- Centraliser les logs de plusieurs machines
+- Mettre en place un reverse proxy (Traefik)
 
 ---
 
-## Architecture cible
+## 🏗️ Architecture
 
-Trois zones réseau isolées :
+### Réseau
 
-| Zone | Réseau | Usage |
-|------|--------|--------|
-| DMZ | 10.10.10.0/24 | Services exposés (reverse proxy) |
-| LAN | 10.10.20.0/24 | Applications internes + monitoring |
-| ADMIN | 10.10.30.0/24 | Accès admin + automatisation |
+- **DMZ** : reverse proxy
+- **LAN** : applications + monitoring + logs
+- **ADMIN** : bastion Ansible
 
 ---
 
-## Machines prévues
+### Machines
 
-| Nom | Rôle |
-|-----|------|
-| fw-opnsense-01 | Firewall, routage, NAT |
-| rp-traefik-01 | Reverse proxy |
-| app-docker-01 | Applications Docker |
-| mon-grafana-01 | Monitoring |
-| log-loki-01 | Logs |
-| adm-ansible-01 | Bastion + Ansible + CI |
-
----
-
-## Avancement
-
-- Mise en place de l’environnement de virtualisation (KVM/libvirt)
-- Configuration réseau fonctionnelle (NAT + DHCP + DNS)
-- Résolution d’un problème DNS lié à libvirt / systemd-resolved
-- Création d’une VM template Debian 12 prête au clonage
-- Initialisation du dépôt et structuration du projet
+| Machine            | Rôle                          |
+|-------------------|------------------------------|
+| adm-ansible-01    | Bastion / Ansible            |
+| rp-traefik-01     | Reverse proxy (DMZ)          |
+| app-docker-01     | Application Docker           |
+| mon-grafana-01    | Monitoring (Prometheus)      |
+| log-loki-01       | Centralisation logs (Loki)   |
 
 ---
 
-## Prochaines étapes
+### Flux
 
-- Création des réseaux internes (DMZ / LAN / ADMIN)
-- Déploiement d’OPNsense
-- Clonage et configuration des VMs
-- Mise en place d’Ansible
-- Déploiement des services (Docker, monitoring, logs)
+#### 🌐 Trafic web
+
+User → Traefik → Application Docker
+
+
+#### 📊 Metrics
+
+Node Exporter → Prometheus → Grafana
+
+
+#### 📄 Logs
+
+VMs → Promtail → Loki → Grafana
+
+
 
 ---
 
-## Objectif professionnel
+## 🛠️ Stack technique
 
-Ce projet a pour but de constituer un support concret pour :
+### Infrastructure
+- KVM / libvirt
+- Debian 12
 
-- démontrer mes compétences en systèmes et réseaux
-- illustrer ma capacité à concevoir une architecture cohérente
-- montrer une démarche d’automatisation et de documentation
-- servir de base de discussion en entretien technique
+### Automatisation
+- Ansible
+
+### Conteneurisation
+- Docker
+- Docker Compose
+
+### Observabilité
+- Prometheus
+- Node Exporter
+- Grafana
+- Loki
+- Promtail
+
+### Réseau / Reverse Proxy
+- Traefik
+
+---
+
+## 🚀 Déploiement
+
+Le déploiement est entièrement automatisé avec Ansible.
+
+```bash
+ansible-playbook -i inventory/hosts.ini playbooks/site.yml --ask-vault-pass
+```
+
+## 🔍 Observabilité
+### Logs (Loki)
+
+Exemples de requêtes :
+
+```
+```bash
+{job="docker"}
+```
+
+```bash
+{job="system"}
+```
+```
+
+```bash
+{job="docker"} |= "error"
+```
+```
+```
+```
+
+### Metrics (Prometheus)
+
+ - CPU / RAM / Disk via Node Exporter
+- Visualisation via Grafana
+
+### Exemples
+
+---
+
+# Ce que j’ai travaillé dans ce projet
+
+Mise en place d’une architecture segmentée
+Automatisation complète avec Ansible
+Déploiement de services conteneurisés
+Centralisation et exploitation des logs
+Mise en place d’une stack de monitoring
+Compréhension des flux (réseau, logs, metrics)
+
+# Améliorations possibles
+
+Ajout d’alerting (Grafana / Prometheus / Loki)
+Activation et analyse des logs Traefik (HTTP access logs)
+Mise en place de TLS avec certificats valides (Let's Encrypt)
+Déploiement sur un environnement cloud (AWS / Azure)
+Ajout d’un pipeline CI/CD
+
+# Remarques
+
+Ce projet est avant tout un environnement d’expérimentation technique, construit pour comprendre et manipuler des briques DevOps dans un contexte cohérent.
